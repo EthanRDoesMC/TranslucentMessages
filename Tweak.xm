@@ -66,7 +66,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 // MARK: - Main Application
 
-%hook SMSApplication
+%hook UIApplication
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     BOOL result = %orig;
@@ -89,7 +89,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 // MARK: - Make navigation bar more translucent
 
-%hook CKAvatarNavigationBar
+%hook UINavigationBar
 
 -(void)_commonNavBarInit {
     %orig;
@@ -111,7 +111,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 }
 
 %end
-
+// copy and hook uitextfield or something instead - also worth noting that this is a vibrant view
 %hook CKMessageEntryView
 
 -(id)initWithFrame:(CGRect)arg1 marginInsets:(UIEdgeInsets)arg2 shouldAllowImpact:(BOOL)arg3 shouldShowSendButton:(BOOL)arg4 shouldShowSubject:(BOOL)arg5 shouldShowPluginButtons:(BOOL)arg6 shouldShowCharacterCount:(BOOL)arg7 {
@@ -152,7 +152,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 %end
 
 %hook _UIBackdropView
-
+// also tweak headers for better sw compat.
 %property (nonatomic, assign) BOOL DDSpecialEffectsActive;
 %property (nonatomic, assign) BOOL DDIsMessageEntryView;
 
@@ -215,7 +215,7 @@ static void settingsChanged(CFNotificationCenterRef center,
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(DDAppBackgrounding:) name:@"UIApplicationWillResignActiveNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(DDAppResumed:) name:@"UIApplicationDidBecomeActiveNotification" object:nil];
 }
-
+// auto notif handling - need to prevent this from running if ios < 10 (perhaps add compat for whatever that tweak is that emulates rich notifs)
 %new
 -(void)DDAppBackgrounding:(NSNotification *)notif {
     %log;
@@ -251,7 +251,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 %end
 
 // MARK: - Fix balloon mask
-
+//id like to reimplement this in list cells and the like - it's a great effect
 %hook CKBalloonView
 
 -(BOOL)canUseOpaqueMask {
@@ -265,8 +265,8 @@ static void settingsChanged(CFNotificationCenterRef center,
 %end
 
 // MARK: - Nav Controller?
-
-%hook CKViewController
+// no its a view controller silly
+%hook UIViewController
 
 -(UIView *)view {
     UIView *orig = %orig;
@@ -297,7 +297,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 %end
 
 // MARK: - Conversation List
-
+// hmm - perhaps options for different elements as well?
 %hook CKConversationListController
 
 -(void)loadView {
@@ -337,7 +337,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 }
 
 %end
-
+// the Chevron screams either apptray or top bar
 %hook CKConversationListCell
 
 -(void)layoutSubviews {
@@ -363,7 +363,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 }
 
 %end
-
+// searchbar code is near ready-to-go for sw, if not done
 %hook UISearchBar
 
 %property (nonatomic, assign) BOOL DDConvoSearchBar;
@@ -480,7 +480,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 %end
 
 // MARK: - GroupMe support
-
+// whoa - why didn't this get added? the filter is still mobilesms - unless im missing something
 %hook GMEmptyView
 
 -(void)setLabel:(UILabel *)arg1 {
@@ -575,7 +575,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 %end
 
 // MARK: - Theme Changes
-
+// need to figure out how to connect this to a standardized view - which can then be inserted in a CC page, NC widget, or anything that does a standard loadView
 %hook CKUIThemeLight
 
 -(UIColor *)messagesControllerBackgroundColor {
@@ -827,7 +827,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
         dlopen("/System/Library/PrivateFrameworks/PersonaUI.framework/PersonaUI", RTLD_LAZY);
         if (isEnabled) %init(Tweak);
         
-        // listen for notifications from settings
+        // listen for notifications from settings | (ethanr) so it just requires a notif? just need to figure out plist-ing from inside a tweak
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
                                         NULL,
                                         (CFNotificationCallback)settingsChanged,
