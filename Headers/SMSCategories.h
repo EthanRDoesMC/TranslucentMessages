@@ -41,7 +41,7 @@
 -(void)DDCommonInit;
 @end
 
-@interface CKMessagesController (Translucency)
+@interface UIViewController (Translucency)
 @property (nonatomic, retain) DDCustomInteraction *interactionController;
 @property (nonatomic, retain) DDCustomAnimator *pushAnimator;
 @property (nonatomic, retain) DDCustomAnimator *popAnimator;

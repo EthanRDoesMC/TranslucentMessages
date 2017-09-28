@@ -288,7 +288,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 -(void)handleBG:(UIView *)view {
     [view setOpaque:NO];
     if([self DDPreviewing]) {
-        [view setBackgroundColor:([NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? [DDTMColours darkViewPreviewingBackgroundColour] : [DDTMColours viewPreviewingBackgroundColour])];
+        [view setBackgroundColor:([NSClassFromString(@"UIBehavior") hasDarkTheme] ? [DDTMColours darkViewPreviewingBackgroundColour] : [DDTMColours viewPreviewingBackgroundColour])];
     } else {
         [view setBackgroundColor:[UIColor clearColor]];
     }
@@ -373,14 +373,14 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     [self setBarTintColor:[self barTintColor]];
     if([self DDSearchBar]) {
         UITextField *searchField = MSHookIvar<UITextField *>(self, "_searchField");
-        [searchField setBackgroundColor:[NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? [DDTMColours darkSearchBarFieldTintColour] : [DDTMColours searchBarFieldTintColour]];
+        [searchField setBackgroundColor:[NSClassFromString(@"UIBehavior") hasDarkTheme] ? [DDTMColours darkSearchBarFieldTintColour] : [DDTMColours searchBarFieldTintColour]];
     }
 }
 
 
 -(UIColor *)barTintColor {
     if([self DDConvoSearchBar]) {
-        return [NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? [DDTMColours darkSearchBarTintColour] : [DDTMColours searchBarTintColour];
+        return [NSClassFromString(@"UIBehavior") hasDarkTheme] ? [DDTMColours darkSearchBarTintColour] : [DDTMColours searchBarTintColour];
     }
     return %orig;
 }
@@ -414,7 +414,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     %orig;
 
     if(!hasPromptedAboutReduceTransparency && UIAccessibilityIsReduceTransparencyEnabled()) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"TranslucentMessages" message:@"We noticed that you have Reduce Transparency turned on in Settings (General > Accessibility > Increase Contrast). This may cause the transparency not to be applied to your messages app properly and recommend that you disable it.\nWe won't tell you again." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Translucency" message:@"We noticed that you have Reduce Transparency turned on in Settings (General > Accessibility > Increase Contrast). This may cause the transparency not to be applied to apps properly and we recommend that you disable it.\nWe won't tell you again." preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
             [alert dismissViewControllerAnimated:YES completion:nil];
         }]];
@@ -441,12 +441,12 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 %new
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
     BOOL canDoIt = false;
-    if([fromVC isKindOfClass:NSClassFromString(@"CKNavigationController")]) {
-        if([((CKNavigationController *)fromVC).visibleViewController isKindOfClass:NSClassFromString(@"CKCoreChatController")] || [((CKNavigationController *)fromVC).visibleViewController isKindOfClass:NSClassFromString(@"CKConversationListController")]) {
+    if([fromVC isKindOfClass:NSClassFromString(@"UINavigationController")]) {
+        if([((CKNavigationController *)fromVC).visibleViewController isKindOfClass:NSClassFromString(@"CKCoreChatController")] || [((UINavigationController *)fromVC).visibleViewController isKindOfClass:NSClassFromString(@"UIListController")]) {
             canDoIt = true;
         }
     }
-    if([fromVC isKindOfClass:NSClassFromString(@"CKConversationListController")]) {
+    if([fromVC isKindOfClass:NSClassFromString(@"UIListController")]) {
         canDoIt = true;
     }
     if(canDoIt) {
@@ -575,13 +575,13 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 // MARK: - Theme Changes
 // need to figure out how to connect this to a standardized view - which can then be inserted in a CC page, NC widget, or anything that does a standard loadView
-%hook CKUIThemeLight
+%hook UIThemeLight
 
--(UIColor *)messagesControllerBackgroundColor {
+-(UIColor *)UIViewControllerBackgroundColor {
     return [DDTMColours viewBackgroundColour];
 }
 
--(UIColor *)conversationListBackgroundColor {
+-(UIColor *)UIListBackgroundColor {
     return [DDTMColours viewBackgroundColour];
 }
 
@@ -633,15 +633,15 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     return UIKeyboardAppearanceDark;
 }
 
--(UIColor *)entryFieldBackgroundColor {
+-(UIColor *)UITextFieldBackgroundColor {
     return [UIColor clearColor];
 }
 
--(UIColor *)entryFieldTextColor {
+-(UIColor *)UITextFieldTextColor {
     return [DDTMColours entryFieldTextColour];
 }
 
--(UIColor *)entryFieldGrayColor {
+-(UIColor *)UITextFieldGrayColor {
     return [DDTMColours entryFieldPlaceholderColour];
 }
 
@@ -649,7 +649,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     return 10100;
 }
 
--(_UIBackdropViewSettings *)entryViewBackdropSettings {
+-(_UIBackdropViewSettings *)UITextFieldBackdropSettings {
     return [_UIBackdropViewSettings settingsForStyle:2];
 }
 
@@ -659,7 +659,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 %end
 
-%hook CKUIThemeDark
+%hook UIThemeDark
 
 -(UIColor *)messagesControllerBackgroundColor {
     return shouldBlur ? [DDTMColours darkViewBackgroundColour] : [DDTMColours darkViewTransparentBackgroundColour];
@@ -749,7 +749,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 // MARK: - iMessage app fix
 
-%hook CKChatController
+%hook UIViewController
 
 -(void)chatInputControllerWillPresentModalBrowserViewController:(id)arg1 {
     %orig;
@@ -763,7 +763,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 %end
 
-%hook CKConversationListTableView
+%hook UITableView
 
 -(void)layoutSubviews {
     %orig;
