@@ -1,13 +1,13 @@
 export TARGET=iphone:clang
 ARCHS = armv7 arm64
 DEBUG = 1
-PACKAGE_VERSION = 1.0.3
+PACKAGE_VERSION = 2.0-beta3-TlMs
 
 THEOS=/opt/theos
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = TranslucentMessages
+TWEAK_NAME = Translucency
 $(TWEAK_NAME)_FILES = Tweak.xm Common/DDCustomInteraction.m Common/DDCustomAnimator.m Common/DDTMColours.m
 $(TWEAK_NAME)_FRAMEWORKS = UIKit
 $(TWEAK_NAME)_LDFLAGS += -F./ -F./Common/
@@ -18,4 +18,4 @@ SUBPROJECTS += Settings
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
 after-install::
-	install.exec "killall MobileSMS Preferences; sblaunch com.apple.MobileSMS"
+	install.exec "killall -9 SpringBoard"

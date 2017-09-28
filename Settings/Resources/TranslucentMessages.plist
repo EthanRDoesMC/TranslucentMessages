@@ -20,17 +20,17 @@
 			<key>key</key>
 			<string>Enabled</string>
 			<key>defaults</key>
-			<string>applebetas.ios.tweaks.translucentmessages</string>
+			<string>tk.ethanrdoesmc.translucency</string>
 			<key>default</key>
 			<true/>
 			<key>PostNotification</key>
-			<string>applebetas.ios.tweaks.translucentmessages.changed</string>
+			<string>tk.ethanrdoesmc.translucency.changed</string>
 		</dict>
 		<dict>
 			<key>footerAlignment</key>
 			<integer>1</integer>
 			<key>footerText</key>
-			<string>Tip: TranslucentMessages can combine with DarkMessages by Sticktron to create a vibrant and beautiful dark mode. DarkMessages is available in BigBoss!</string>
+			<string>I'll be working on a fork of DarkMessages in the future - TranslucentMessages has built-in compatibility, so why not merge them?</string>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 		</dict>
@@ -44,11 +44,11 @@
 			<key>key</key>
 			<string>BlurWallpaper</string>
 			<key>defaults</key>
-			<string>applebetas.ios.tweaks.translucentmessages</string>
+			<string>tk.ethanrdoesmc.translucency</string>
 			<key>default</key>
 			<true/>
 			<key>PostNotification</key>
-			<string>applebetas.ios.tweaks.translucentmessages.changed</string>
+			<string>tk.ethanrdoesmc.translucency.changed</string>
 		</dict>
 		<dict>
 			<key>label</key>
@@ -65,13 +65,13 @@
 					<key>service</key>
 					<string>website</string>
 					<key>username</key>
-					<string>https://www.applebetas.co/</string>
+					<string>https://ethanrdoesmc.github.io/</string>
 				</dict>
 				<dict>
 					<key>service</key>
 					<string>twitter</string>
 					<key>username</key>
-					<string>AppleBetasDev</string>
+					<string>EthanRDoesMC_</string>
 				</dict>
 				<dict>
 					<key>service</key>
@@ -83,41 +83,21 @@
 					<key>service</key>
 					<string>reddit</string>
 					<key>username</key>
-					<string>AppleBetas</string>
-				</dict>
-				<dict>
-					<key>service</key>
-					<string>paypal</string>
-					<key>username</key>
-					<string>AppleBetasPay</string>
+					<string>EthanRDoesMC</string>
 				</dict>
 				<dict>
 					<key>service</key>
 					<string>github</string>
 					<key>username</key>
-					<string>AppleBetas</string>
-				</dict>
-				<dict>
-					<key>service</key>
-					<string>instagram</string>
-					<key>username</key>
-					<string>AppleBetas</string>
+					<string>EthanRDoesMC</string>
 				</dict>
 				<dict>
 					<key>forcedFormattedUsername</key>
-					<string>AppleBetas</string>
-					<key>service</key>
-					<string>googlePlus</string>
-					<key>username</key>
-					<string>101720869338481663975</string>
-				</dict>
-				<dict>
-					<key>forcedFormattedUsername</key>
-					<string>AppleBetas</string>
+					<string>EthanRDoesMC</string>
 					<key>service</key>
 					<string>youtube</string>
 					<key>username</key>
-					<string>channel/UCWNX3hf4I6v3acsZfsMmmsg</string>
+					<string>channel/UCmZ_Izt6aRnabw-xSQpdf2Q</string>
 				</dict>
 			</array>
 			<key>avatarImage</key>
@@ -125,19 +105,11 @@
 			<key>creditPosition</key>
 			<string>Developer</string>
 			<key>creditName</key>
-			<string>AppleBetas</string>
+			<string>EthanRDoesMC (Translucency SW) | AppleBetas (TranslucentMessages)</string>
 			<key>height</key>
 			<integer>88</integer>
 			<key>cellClass</key>
 			<string>DDCreditCell</string>
-		</dict>
-		<dict>
-			<key>action</key>
-			<string>openDonate</string>
-			<key>label</key>
-			<string>Donate for my efforts</string>
-			<key>cell</key>
-			<string>PSButtonCell</string>
 		</dict>
 	</array>
 </dict>

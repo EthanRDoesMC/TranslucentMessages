@@ -33,7 +33,7 @@
 static BOOL isEnabled = YES;
 static BOOL shouldBlur = YES;
 static BOOL hasPromptedAboutReduceTransparency = NO;
-CFStringRef kPrefsAppID = CFSTR("applebetas.ios.tweaks.translucentmessages");
+CFStringRef kPrefsAppID = CFSTR("tk.ethanrdoesmc.translucency");
 
 static void loadSettings() {
     NSDictionary *settings = nil;
@@ -79,7 +79,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 -(void)_setBackgroundStyle:(UIBackgroundStyle)style {
     if(shouldBlur) {
-        %orig([NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? [DDTMColours darkBlurStyle] : [DDTMColours blurStyle]);
+        %orig([NSClassFromString(@"UIBehavior") hasDarkTheme] ? [DDTMColours darkBlurStyle] : [DDTMColours blurStyle]);
     } else {
         %orig([DDTMColours transparentStyle]);
     }
@@ -94,17 +94,17 @@ static void settingsChanged(CFNotificationCenterRef center,
 -(void)_commonNavBarInit {
     %orig;
     _UIBarBackground *barBackgroundView = MSHookIvar<_UIBarBackground *>(self, "_barBackgroundView");
-    [barBackgroundView setDDIsInAvatarNavigationBar:YES];
+    [barBackgroundView setDDIsInNavigationBar:YES];
 }
 
 %end
 
 %hook _UIBarBackground
 
-%property (nonatomic, assign) BOOL DDIsInAvatarNavigationBar;
+%property (nonatomic, assign) BOOL DDIsInNavigationBar;
 
 -(id)_blurWithStyle:(long long)arg1 tint:(id)arg2 {
-    if([self DDIsInAvatarNavigationBar] && arg1 == 0) {
+    if([self DDIsInNavigationBar] && arg1 == 0) {
         return [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     }
     return %orig;
@@ -112,7 +112,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 %end
 // copy and hook uitextfield or something instead - also worth noting that this is a vibrant view
-%hook CKMessageEntryView
+%hook UITextField
 
 -(id)initWithFrame:(CGRect)arg1 marginInsets:(UIEdgeInsets)arg2 shouldAllowImpact:(BOOL)arg3 shouldShowSendButton:(BOOL)arg4 shouldShowSubject:(BOOL)arg5 shouldShowPluginButtons:(BOOL)arg6 shouldShowCharacterCount:(BOOL)arg7 {
     self = %orig;
@@ -252,7 +252,7 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 // MARK: - Fix balloon mask
 //id like to reimplement this in list cells and the like - it's a great effect
-%hook CKBalloonView
+%hook UICellView
 
 -(BOOL)canUseOpaqueMask {
     return NO;
@@ -298,15 +298,15 @@ static void settingsChanged(CFNotificationCenterRef center,
 
 // MARK: - Conversation List
 // hmm - perhaps options for different elements as well?
-%hook CKConversationListController
+%hook UIListController
 
 -(void)loadView {
     %orig;
-    [self.searchController.searchBar setDDConvoSearchBar:YES];
+    [self.searchController.searchBar setDDSearchBar:YES];
 }
 
 -(void)setSearchController:(UISearchController *)arg1 {
-    [arg1.searchBar setDDConvoSearchBar:YES];
+    [arg1.searchBar setDDSearchBar:YES];
     %orig;
 }
 
@@ -338,7 +338,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 %end
 // the Chevron screams either apptray or top bar
-%hook CKConversationListCell
+%hook UIListCell
 
 -(void)layoutSubviews {
     // Chevron
@@ -371,7 +371,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 %new
 -(void)DDCommonInit {
     [self setBarTintColor:[self barTintColor]];
-    if([self DDConvoSearchBar]) {
+    if([self DDSearchBar]) {
         UITextField *searchField = MSHookIvar<UITextField *>(self, "_searchField");
         [searchField setBackgroundColor:[NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? [DDTMColours darkSearchBarFieldTintColour] : [DDTMColours searchBarFieldTintColour]];
     }
@@ -391,9 +391,9 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 %end
 
-%hook CKBrowserFooterTransitionView
+%hook UITransitionView
 
--(void)setEntryView:(CKMessageEntryView *)arg1 {
+-(void)setEntryView:(UITextField *)arg1 {
     [arg1 setDDSpecialEffectsActive:NO];
     %orig;
 }
@@ -402,7 +402,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 // MARK: - Navigation animation & interaction
 
-%hook CKMessagesController
+%hook UIViewController
 
 %property (nonatomic, retain) DDCustomInteraction *interactionController;
 %property (nonatomic, retain) DDCustomAnimator *pushAnimator;
@@ -435,7 +435,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     [self setPushCurvedAnimator:[[DDCustomAnimator alloc] initWithCurved:YES]];
     [self setPopCurvedAnimator:[[DDCustomAnimator alloc] initWithReverse:YES andCurved:YES]];
     
-    [self.view setBackgroundColor:[[NSClassFromString(@"CKUIBehavior") currentTheme] messagesControllerBackgroundColor]];
+    [self.view setBackgroundColor:[[NSClassFromString(@"UIBehavior") currentTheme] UIViewControllerBackgroundColor]];
 }
 
 %new
@@ -481,7 +481,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 // MARK: - GroupMe support
 // whoa - why didn't this get added? the filter is still mobilesms - unless im missing something
-%hook GMEmptyView
+%hook UIView
 
 -(void)setLabel:(UILabel *)arg1 {
     [arg1 setTextColor:[UIColor whiteColor]];
@@ -521,11 +521,11 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 %hook UIKBRenderConfig
 
 - (NSInteger)backdropStyle {
-    return [NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? 2030 : 3900;
+    return [NSClassFromString(@"UIBehavior") hasDarkTheme] ? 2030 : 3900;
 }
 
 +(long long)backdropStyleForStyle:(long long)arg1 quality:(long long)arg2 {
-    return %orig([NSClassFromString(@"CKUIBehavior") hasDarkTheme] ? 2030 : 3900, arg2);
+    return %orig([NSClassFromString(@"UIBehavior") hasDarkTheme] ? 2030 : 3900, arg2);
 }
 
 %end
@@ -536,7 +536,6 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     self = %orig;
     UIView *darkeningView = [[UIView alloc] initWithFrame:self.bounds];
     [darkeningView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.25]];
-    // im fucking lazy deal with it
     [darkeningView setTag:49203];
     [self addSubview:darkeningView];
     return self;
@@ -552,21 +551,21 @@ commitViewController:(UIViewController *)viewControllerToCommit {
 
 %end
 
-%hook CKUIBehavior
+%hook UIBehavior
 
 %new
-+(CKUITheme *)currentTheme {
++(UITheme *)currentTheme {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return [[NSClassFromString(@"CKUIBehaviorPad") sharedBehaviors] theme];
+        return [[NSClassFromString(@"UIBehaviorPad") sharedBehaviors] theme];
     } else {
-        return [[NSClassFromString(@"CKUIBehaviorPhone") sharedBehaviors] theme];
+        return [[NSClassFromString(@"UIBehaviorPhone") sharedBehaviors] theme];
     }
 }
 
 %new
 +(BOOL)hasDarkTheme {
-    CKUITheme *theme = [NSClassFromString(@"CKUIBehavior") currentTheme];
-    if([theme isKindOfClass:NSClassFromString(@"CKUIThemeDark")]) {
+    CKUITheme *theme = [NSClassFromString(@"UIBehavior") currentTheme];
+    if([theme isKindOfClass:NSClassFromString(@"UIThemeDark")]) {
         return YES;
     }
     return NO;
@@ -795,7 +794,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
     %orig;
     if([NSStringFromClass([[[(UIView *)self superview] superview] class]) isEqualToString:@"CKAvatarView"]) {
         CAGradientLayer *gradientLayer = MSHookIvar<CAGradientLayer *>(self, "_circleGradientLayer");
-        if(![NSClassFromString(@"CKUIBehavior") hasDarkTheme] && [NSStringFromClass([[[[[(UIView *)self superview] superview] superview] superview] class]) isEqualToString:@"CKAvatarCollectionViewCell"]) { // is light mode & in navbar
+        if(![NSClassFromString(@"UIBehavior") hasDarkTheme] && [NSStringFromClass([[[[[(UIView *)self superview] superview] superview] superview] class]) isEqualToString:@"CKAvatarCollectionViewCell"]) { // is light mode & in navbar
             gradientLayer.colors = @[(id)[UIColor colorWithWhite:0 alpha:0.15].CGColor, (id)[UIColor colorWithWhite:0 alpha:0.05].CGColor];
         } else {
             gradientLayer.colors = @[(id)[UIColor colorWithWhite:1 alpha:0.1].CGColor, (id)[UIColor colorWithWhite:1 alpha:0.25].CGColor];
@@ -831,7 +830,7 @@ commitViewController:(UIViewController *)viewControllerToCommit {
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
                                         NULL,
                                         (CFNotificationCallback)settingsChanged,
-                                        CFSTR("applebetas.ios.tweaks.translucentmessages.changed"),
+                                        CFSTR("tk.ethanrdoesmc.translucency.changed"),
                                         NULL,
                                         CFNotificationSuspensionBehaviorDeliverImmediately);
     }

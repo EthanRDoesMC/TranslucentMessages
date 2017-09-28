@@ -25,39 +25,34 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SMSApplication : UIApplication {
+@interface UIApplication {
     UIWindow* _window;
 }
 @property (nonatomic,retain) UIWindow * window;
 @end
 
-@interface CKViewController : UIViewController <UINavigationControllerDelegate>
+@interface UIViewController <UINavigationControllerDelegate>
 -(void)handleBG:(UIView *)view;
 @end
 
-@interface CKScrollViewController : CKViewController
+@interface UIScrollViewController : CKViewController
 @end
 
-@interface CKNavigationController : UINavigationController
+@interface UINavigationController
 @end
 
-@interface CKMessagesController : UISplitViewController
--(CKNavigationController *)chatNavigationController;
--(CKNavigationController *)conversationListNavigationController;
+@interface UISplitViewController
 @end
 
-@interface CKStarkConversationListViewController : UITableViewController
-@end
-
-@interface CKConversationListController : UITableViewController
+@interface UITableViewController
 -(UISearchController *)searchController;
 -(void)setSearchController:(UISearchController *)arg1;
 @end
 
-@interface CKConversationListTableView : UITableView
+@interface UITableView
 @end
 
-@interface CKConversationListCell : UITableViewCell
+@interface UITableViewCell
 @end
 
 @interface _UIBackdropViewSettings : NSObject
@@ -78,7 +73,7 @@
 -(_UIBackdropViewSettings *)effectSettings;
 @end
 
-@interface CKAvatarNavigationBar : UINavigationBar
+@interface UINavigationBar
 @end
 
 @interface _UIBackdropView : UIView
@@ -91,7 +86,7 @@
 -(void)setStyle:(long long)arg1 ;
 @end
 
-@interface CKMessageEntryView : UIView {
+@interface UITextField : UIView {
     _UIBackdropView * _backdropView;
 }
 -(BOOL)shouldConfigureForFullscreenAppView;
@@ -104,46 +99,38 @@
 @interface _UIBarBackground : UIView
 @end
 
-@interface CKMessageEntryTextView : UITextView
+@interface UITextField : UITextView
 @end
 
-@interface CKMessageEntryRichTextView : CKMessageEntryTextView
+@interface UITextField : UIScrollView
 @end
 
-@interface CKMessageEntryContentView : UIScrollView
-@end
-
-@interface CKEntryViewButton : UIButton
+@interface UIButton
 -(void)setCkTintColor:(UIColor *)arg1;
 -(UIColor *)ckTintColor;
 -(long long)entryViewButtonType;
 @end
 
-@interface CKUITheme : NSObject
+@interface UITheme : NSObject
 - (id)entryFieldHighlightedButtonColor;
--(UIColor *)messagesControllerBackgroundColor;
+-(UIColor *)viewControllerBackgroundColor;
 @end
 
-@interface CKUIBehavior : NSObject
+@interface UIBehavior : NSObject
 +(id)sharedBehaviors;
-+(CKUITheme *)currentTheme;
++(UITheme *)currentTheme;
 +(BOOL)hasDarkTheme;
--(CKUITheme *)theme;
+-(UITheme *)theme;
 @end
 
-@interface CKUIBehaviorPhone : CKUIBehavior
+@interface UIBehaviorPhone : UIBehavior
 @end
 
-@interface CKUIBehaviorPad : CKUIBehavior
+@interface UIBehaviorPad : UIBehavior
 @end
 
-@interface CKCoreChatController : CKScrollViewController
+@interface UIScrollViewController
 -(UIScrollView *)scrollView;
-@end
-
-@interface CKChatController : CKCoreChatController
--(CKMessageEntryView *)entryView;
--(void)setEntryView:(CKMessageEntryView *)arg1;
 @end
 
 @interface UIApplication (Private)
@@ -159,7 +146,9 @@
 
 // MARK: - GroupMe Support
 
-@interface GMEmptyView : UIView
+// LET THERE BE BUGS
+
+@interface UIView
 -(void)setLabel:(UILabel *)arg1 ;
 -(void)setImageView:(UIImageView *)arg1 ;
 @end

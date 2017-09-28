@@ -58,7 +58,7 @@
         
         // Title Label
         UIFont *titleFont = [UIFont systemFontOfSize:32 weight:UIFontWeightThin];
-        NSString *title = @"TranslucentMessages";
+        NSString *title = @"Translucency";
         CGSize labelSize = [title boundingRectWithSize:CGSizeMake(width, 100) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:titleFont} context:nil].size;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, width, labelSize.height)];
         label.text = title;
@@ -73,7 +73,7 @@
         
         // Subtitle label
         UIFont *subtitleFont = [UIFont systemFontOfSize:20 weight:UIFontWeightRegular];
-        NSString *subtitle = @"by betas";
+        NSString *subtitle = @"by EthanRDoesMC";
         CGSize subtitleLabelSize = [subtitle boundingRectWithSize:CGSizeMake(width, 60) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:subtitleFont} context:nil].size;
         UILabel *sublabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 90, width, subtitleLabelSize.height)];
         sublabel.text = subtitle;

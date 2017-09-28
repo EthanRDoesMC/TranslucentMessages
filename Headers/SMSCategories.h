@@ -27,7 +27,7 @@
 
 @class DDCustomInteraction;
 
-@interface _UIBackdropView (TranslucentMessages)
+@interface _UIBackdropView (Translucency)
 @property (nonatomic, assign) BOOL DDSpecialEffectsActive;
 @property (nonatomic, assign) BOOL DDIsMessageEntryView;
 
@@ -37,11 +37,11 @@
 -(void)DDRemovePreservationView;
 @end
 
-@interface CKNavigationController (TranslucentMessages)
+@interface UINavigationController (Translucency)
 -(void)DDCommonInit;
 @end
 
-@interface CKMessagesController (TranslucentMessages)
+@interface CKMessagesController (Translucency)
 @property (nonatomic, retain) DDCustomInteraction *interactionController;
 @property (nonatomic, retain) DDCustomAnimator *pushAnimator;
 @property (nonatomic, retain) DDCustomAnimator *popAnimator;
@@ -49,17 +49,17 @@
 @property (nonatomic, retain) DDCustomAnimator *popCurvedAnimator;
 @end
 
-@interface CKMessageEntryView (TranslucentMessages)
+@interface UITextField (Translucency)
 -(void)DDInitialize;
 -(BOOL)DDSpecialEffectsActive;
 -(void)setDDSpecialEffectsActive:(BOOL)active;
 @end
 
-@interface _UIBarBackground (TranslucentMessages)
-@property (nonatomic, assign) BOOL DDIsInAvatarNavigationBar;
+@interface _UIBarBackground (Translucency)
+@property (nonatomic, assign) BOOL DDIsInNavigationBar;
 @end
 
 @interface UISearchBar (DDConvoSearchBar)
-@property (nonatomic, assign) BOOL DDConvoSearchBar;
+@property (nonatomic, assign) BOOL DDSearchBar;
 -(void)DDCommonInit;
 @end
